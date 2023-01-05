@@ -6,25 +6,6 @@ import { useLanguage } from "../hooks/languageHook"
 
 import Header from "../components/header"
 
-function imageToBlob(imageSrc) {
-  const img = new Image()
-  const c = document.createElement("canvas")
-  const ctx = c.getContext("2d")
-  img.crossOrigin = ""
-  img.src = imageSrc
-  return new Promise((resolve,) => {
-    img.onload = function () {
-      c.width = this.naturalWidth;
-      c.height = this.naturalHeight
-      ctx.drawImage(this, 0, 0)
-      c.toBlob((blob) => {
-        // here the image is a blob
-        resolve(blob)
-      }, "image/png", 0.75)
-    }
-  })
-}
-
 function HomePage() {
 
     const { loading, error, request, clearError } = useHttp()
@@ -36,30 +17,7 @@ function HomePage() {
     const [prevForm, setPrevForm] = useState({})
     const [urlList, setUrlList] = useState([])
     const [customOccasionClicked, setCustomOccasionClicked] = useState(false)
-
-    async function copyToClipboard(imageSrc){
-      const blob = await imageToBlob(imageSrc)
-      const item = new ClipboardItem({ "image/png": blob });
-      
-      try {
-        navigator.clipboard.write([item]);
-        console.log("image copied")
-        toast.success(t("Image copied to clipboard"), {
-          style: {backgroundColor: "#555", color: "white"},
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Slide,
-          });
-      } catch (e) {
-        console.log("Copy failed" + e)
-      }
-    }
+    const [disabledSearchButton, setDisabledSearchButton] = useState(true)
   
     useEffect(() => {
       if (error) {
@@ -78,18 +36,21 @@ function HomePage() {
         transition: Slide,
         });
     }, [error])
+
+    useEffect(() => {
+      const checkFormIsChanged = () => {
+        if (JSON.stringify(form) === JSON.stringify({})) {
+          setDisabledSearchButton(true)
+        } else {
+          setDisabledSearchButton(false)
+        }
+      }
+      checkFormIsChanged()
+    }, [form])
   
     const changeForm = (event) => {
       setForm({...form , [event.target.name]: event.target.value})
     }
-  
-    // const handleClick = async (event) => {
-    //   event.preventDefault()
-    //   clearError()
-    //   const data = await request("/api/home", "post", {...form})
-    //   setImageSrc(data.imgUrl) 
-    //   !start ? setStart(true) : setStart(true)
-    // }
 
     const getRequestData = async () => {
       const data = await request("/api/home", "post", {...form})
@@ -108,10 +69,6 @@ function HomePage() {
         setPrevForm({...form})
       }
       !start ? setStart(true) : setStart(true)
-    }
-
-    const copyImg = () => {
-      copyToClipboard(imageSrc)
     }
   
     return (
@@ -165,23 +122,35 @@ function HomePage() {
                       className="radio-button"
                       id="4"
                       name="occasion"
-                      value={t("Happy Holidays")}
+                      value={t("Good Morning")}
                       onChange={changeForm} 
                       onClick={() => {setCustomOccasionClicked(false)}}
                       />
                     <label htmlFor="4">
-                      {t("Holidays")}
+                      {t("Good Morning")}
+                    </label>
+                    <input 
+                      type="radio"
+                      className="radio-button"
+                      id="5"
+                      name="occasion"
+                      value={t("Good Night")}
+                      onChange={changeForm} 
+                      onClick={() => {setCustomOccasionClicked(false)}}
+                      />
+                    <label htmlFor="5">
+                      {t("Good Night")}
                     </label>
                       <input 
                       type="radio"
                       className="radio-button"
-                      id="5"
+                      id="6"
                       name="occasion"
                       value=""
                       onChange={changeForm}
                       onClick={() => {setCustomOccasionClicked(true)}}
                       />
-                    <label htmlFor="5">
+                    <label htmlFor="6">
                       {t("Custom")}
                     </label>
                   </div>
@@ -203,19 +172,21 @@ function HomePage() {
                   placeholder={t("What is your friend's name?")} 
                   onChange={changeForm} 
                 />
-                <button type="submit" className="find-button" onClick={handleClick}>{t("Find Image")}</button>
+                <button
+                  type="submit"
+                  className="find-button"
+                  title={disabledSearchButton ? t("Choose occasion or input name") : null}
+                  disabled={disabledSearchButton} 
+                  onClick={handleClick}>
+                    {t("Find Image")}
+                  </button>
               </form>
             </div>
               <div className="image-container">
                 {loading ? <>
                     <div className="lds-dual-ring"></div><p className="loading-description">{t("Image is loading")}</p>
                   </> :
-                <div className="image-wrapper tooltip">
-                  <img onClick={copyImg} className="image-result" src ={imageSrc} alt={t("Couldn't load, try again")} />
-                  <span className="tooltiptext">
-                  <p className="tooltip-description">{t("Click to copy image")}</p>
-                  </span>
-                </div>}
+                  <img className="image-result" src ={imageSrc} alt={t("Couldn't load, try again")} />}
               </div>
             </div>
             <div className="image-description">

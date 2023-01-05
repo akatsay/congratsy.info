@@ -6,7 +6,9 @@
 body {
   background-image: url(./images/background.jpg);
   background-attachment: fixed;
-  background-size: 70%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -27,10 +29,9 @@ body {
 }
 
 .language {
+  margin: 0;
   background: none;
   border: none;
-  text-decoration: none;
-  font-family: inherit;
   font-size: inherit;
   cursor: pointer;
   padding: 1rem 1.5rem;
@@ -38,46 +39,38 @@ body {
 }
 
 .language-option {
-  padding: 1rem;
+  padding: 1rem 1.4rem;
   background: none;
   border: none;
-  text-decoration: none;
-  font-family: inherit;
   font-size: inherit;
   cursor: pointer;
   color: white;
 }
 
-.language:focus, .language:hover {
+.dropdown:hover .language {
   background-color: #555;
 }
 
 .dropdown {
   position: relative;
+  display: inline-block;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
 }
 
 .dropdown-menu {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
   background-color: #555;
   border-bottom-left-radius: .25rem;
   opacity: 0;
-  transition: opacity 150ms ease-in-out;
   text-align: center;
 }
-
-.language:focus + .dropdown-menu {
-  opacity: 1;
-}
-
-.language-option:disabled {
-  pointer-events: none;
-}
-
-.language-option:enabled {
-  pointer-events: auto;
-} 
 
 .content-container {
   width: 50vw;
@@ -188,7 +181,22 @@ input::placeholder {
   box-shadow: 0 0.3rem #999;
   border: none;
   font-size: 1.2rem;
-  word-wrap: break-word
+  word-wrap: break-word;
+  color: black;
+}
+
+.find-button:disabled {
+  color: black;
+}
+
+.find-button:disabled:active {
+  transform: translateY(0);
+  box-shadow: 0 0.3rem #999;
+}
+
+.find-button:disabled:hover {
+  background-color: #ADD8E6;
+  cursor: default;
 }
 
 .find-button:hover {
@@ -202,50 +210,15 @@ input::placeholder {
   transform: translateY(4px);
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  margin-left: 5%;
-  visibility: hidden;
-  width: 20vw;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  font-size: 1.5rem;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  word-wrap: break-word;
-}
-
-.tooltip-description {
-  padding: .2rem;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
 .image-container {
   width: 100%;
   text-align: center;
   padding-bottom: 2vh;
 }
 
-.image-wrapper {
-  width: 95%;
-}
-
 .image-result {
-  width: 100%;
-}
-
-.image-result:hover {
-  cursor: pointer;
+  width: 95%;
+  margin: auto;
 }
 
 .image-description {
@@ -311,10 +284,6 @@ input::placeholder {
     .image-description {
       width: 60%;
     }
-    .tooltip .tooltiptext {
-      width: 13vw;
-      font-size: 1rem;
-    }
   }
 
   @media (max-width: 500px) {
@@ -323,10 +292,6 @@ input::placeholder {
     }
     .image-description {
       width: 70%;
-    }
-    .tooltip .tooltiptext {
-      width: 10vw;
-      font-size: 0.5rem;
     }
   }
 

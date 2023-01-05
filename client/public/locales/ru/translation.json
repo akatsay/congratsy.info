@@ -8,13 +8,14 @@
     "Merry Christmas": "С рождеством",
     "New Year": "Новый год",
     "Happy New Year": "С новым годом",
-    "Holidays": "Отпуск",
-    "Happy Holidays": "Счастливого отпуска",
+    "Good Morning": "Доброе утро",
+    "Good Night": "Спокойной ночи",
     "Custom": "Другой",
 
     "Input your occasion": "Введите ваш повод",
     "What is your friend's name?": "Как зовут вашего друга?",
     "Find Image": "Найти картинку",
+    "Choose occasion or input name": "Выберите повод или введите имя",
 
     "Image is loading": "Картинка загружается",
     "Couldn't load, try again": "Не получилось загрузить, попробуйте ещё",
