@@ -1,0 +1,26 @@
+{
+    "Congratulate your friend": "Поздравь друга",
+    "Choose the occasion": "Выберите повод для поздравления",
+
+    "Birthday": "День рождения",
+    "Happy Birthday": "С днем рождения",
+    "Christmas": "Рождество",
+    "Merry Christmas": "С рождеством",
+    "New Year": "Новый год",
+    "Happy New Year": "С новым годом",
+    "Holidays": "Отпуск",
+    "Happy Holidays": "Счастливого отпуска",
+    "Custom": "Другой",
+
+    "Input your occasion": "Введите ваш повод",
+    "What is your friend's name?": "Как зовут вашего друга?",
+    "Find Image": "Найти картинку",
+
+    "Image is loading": "Картинка загружается",
+    "Couldn't load, try again": "Не получилось загрузить, попробуйте ещё",
+    "Click to copy image": "Нажмите чтобы скопировать",
+    "Source: ": "Источник: ",
+
+    "Image copied to clipboard": "Картинка скопирована в буфер обмена",
+    "server could not find image according to your query": "Не получилось найти картинку по вашему запросу"
+}
