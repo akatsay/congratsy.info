@@ -1,7 +1,8 @@
 import React from "react"
+
 import { useLanguage } from "../hooks/languageHook"
 
-function Header() {
+export const Header = () => {
 
   const {language, setLanguage, changeLanguage} = useLanguage()
 
@@ -17,22 +18,31 @@ function Header() {
              alt="" />
           </button>
           <div className="dropdown-menu">
-            { language === "ru" ? <button 
-            className="language-option"
-            onClick={() => {changeLanguage("en"); setLanguage("en");}}>
+            { language === "ru" ? 
+            <button 
+              className="language-option"
+              onClick={() => {changeLanguage("en"); setLanguage("en");}}
+            >
             EN
-            <img className="flag" src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/GB.svg" alt=""/>
+            <img 
+              className="flag" 
+              src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/GB.svg" 
+              alt=""
+            />
             </button> :
             <button
-            className="language-option"
-            onClick={() => {changeLanguage("ru"); setLanguage("ru");}}>
+              className="language-option"
+              onClick={() => {changeLanguage("ru"); setLanguage("ru");}}
+            >
             RU
-            <img className="flag" src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/RU.svg" alt=""/>
+            <img
+              className="flag" 
+              src="https://catamphetamine.gitlab.io/country-flag-icons/3x2/RU.svg"
+              alt=""
+            />
             </button>}
           </div>
         </div>
       </nav>
     )
 }
-
-export default Header

@@ -26,37 +26,6 @@ async function GetImgUrlFromSearch(searchName, searchOccasion) {
     return fullUrlList
 }
 
-// async function GetImgUrlFromSearch(searchName, searchOccasion) {
-
-//     const cseId = config.get('cseId')
-//     const apiKey = config.get('apiKey')
-
-//     const searchString = searchOccasion + "+" + searchName
-
-//     const client = new imageSearch(cseId, apiKey)
-//     const options = { page: 1 }
-
-
-
-//     if (searchString == prevSearchString) {
-//         const randomUrl = currentUrlList[Math.floor(Math.random() * currentUrlList.length)]
-//         return randomUrl
-//     } else {
-//         const clientSearch = await client.search(searchString, options).then(images => {
-//             const urlList = images.map(item => {
-//                 return item.url
-//             })
-//             console.log("google search happened")
-//             return (
-//             prevSearchString = searchString,
-//             currentUrlList = urlList
-//             )
-//         })
-//         const randomUrl = currentUrlList[Math.floor(Math.random() * currentUrlList.length)]
-//         return randomUrl
-//     }
-// }
-
 router.post("/", async (req, res) => {
     try {
         const searchName = req.body.name
@@ -71,7 +40,6 @@ router.post("/", async (req, res) => {
         }
         
     } catch (e) {
-        console.log(e)
         res.status(500).json({message: 'Server error, try again later'})
     }
 })

@@ -1,28 +1,58 @@
-import React, { useEffect, useState } from "react"
-import { ToastContainer, toast, Slide } from "react-toastify"
+import React, { useCallback, useEffect, useState } from "react"
+import { toast, Slide } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
+
 import { useHttp } from "../hooks/http.hook"
 import { useLanguage } from "../hooks/languageHook"
 
-import Header from "../components/header"
+import { ImageDescription } from "../components/imageDescription"
+import { Image } from "../components/image"
 
-function HomePage() {
+export const HomePage = () => {
 
     const { loading, error, request, clearError } = useHttp()
     const {t} = useLanguage()
   
     const [start, setStart] = useState(false)
     const [imageSrc, setImageSrc] = useState(require("../images/duck.png"))
-    const [form, setForm] = useState({})
-    const [prevForm, setPrevForm] = useState({})
     const [urlList, setUrlList] = useState([])
+    const [idCounter, setIdCounter] = useState(0)
+
+    const [form, setForm] = useState({
+      occasion: "",
+      name: ""
+    })
+    const [prevForm, setPrevForm] = useState({
+      occasion: "",
+      name: ""
+    })
+    
     const [customOccasionClicked, setCustomOccasionClicked] = useState(false)
     const [disabledSearchButton, setDisabledSearchButton] = useState(true)
-  
-    useEffect(() => {
-      if (error) {
-      setImageSrc(require("../images/error.png"))
+
+    const changeForm = (event) => {
+      setForm({...form , [event.target.name]: event.target.value})
+    }
+    
+    const checkFormIsChanged = useCallback(() => {
+      if (JSON.stringify(form) === JSON.stringify({occasion: "", name: ""})) {
+        setDisabledSearchButton(true)
+      } else {
+        setDisabledSearchButton(false)
       }
+    }, [form])
+    
+
+    useEffect(() => {
+      checkFormIsChanged()
+    }, [checkFormIsChanged])
+
+    useEffect(() => {
+
+      if (error) {
+        setImageSrc(require("../images/error.png"))
+      }
+
       toast.error(error, {
         style: {backgroundColor: "#555", color: "white"},
         position: "bottom-right",
@@ -35,37 +65,35 @@ function HomePage() {
         theme: "light",
         transition: Slide,
         });
+
     }, [error])
-
-    useEffect(() => {
-      const checkFormIsChanged = () => {
-        if (JSON.stringify(form) === JSON.stringify({})) {
-          setDisabledSearchButton(true)
-        } else {
-          setDisabledSearchButton(false)
-        }
-      }
-      checkFormIsChanged()
-    }, [form])
   
-    const changeForm = (event) => {
-      setForm({...form , [event.target.name]: event.target.value})
-    }
-
     const getRequestData = async () => {
       const data = await request("/api/home", "post", {...form})
       return data.imgUrl
     }
 
-    const handleClick = async (event) => {
+    // counter to set id for getting imageSrc from urlList every time user clicks search with unchanged query
+
+    const countId = () => {
+      if (idCounter >= (urlList.length - 1)) {
+        setIdCounter(0)
+      } else {
+        setIdCounter(idCounter + 1)
+      }
+    }
+
+    const handleSubmit = async (event) => {
       event.preventDefault()
       clearError()
       if (JSON.stringify(form) === JSON.stringify(prevForm)) {
-        setImageSrc(urlList[Math.floor(Math.random() * urlList.length)])
+        countId()
+        setImageSrc(urlList[idCounter])
       } else {
         const data = await getRequestData()
+        setIdCounter(0)
         setUrlList([...data])
-        setImageSrc(data[Math.floor(Math.random() * data.length)]) 
+        setImageSrc(data[idCounter]) 
         setPrevForm({...form})
       }
       !start ? setStart(true) : setStart(true)
@@ -73,15 +101,15 @@ function HomePage() {
   
     return (
       <>
-        <Header />
-          <div className ="content-container">
+        <div className ="content-container">
           <h1 className="content-title">{t("Congratulate your friend")}</h1>
             <div className="form-container"> 
               <form className="content-form">
                 <div className="radio-container">
                   <h3 className="radio-title">{t("Choose the occasion")}</h3>
                   <div className="radio-container-items">
-                      <input 
+
+                    <input 
                       type="radio"
                       className="radio-button"
                       id="1" 
@@ -89,11 +117,12 @@ function HomePage() {
                       value={t("Happy Birthday")}
                       onChange={changeForm}
                       onClick={() => {setCustomOccasionClicked(false)}}
-                      />
+                    />
                     <label htmlFor="1">
-                      {t("Birthday")}
+                    {t("Birthday")}
                     </label>
-                      <input 
+
+                    <input 
                       type="radio"
                       className="radio-button" 
                       id="2"
@@ -101,11 +130,12 @@ function HomePage() {
                       value={t("Merry Christmas")}
                       onChange={changeForm}
                       onClick={() => {setCustomOccasionClicked(false)}}
-                      />
+                    />
                     <label htmlFor="2">
-                      {t("Christmas")}
+                    {t("Christmas")}
                     </label>
-                      <input 
+
+                    <input 
                       type="radio"
                       className="radio-button" 
                       id="3"
@@ -113,11 +143,12 @@ function HomePage() {
                       value={t("Happy New Year")}
                       onChange={changeForm}
                       onClick={() => {setCustomOccasionClicked(false)}}
-                      />
+                    />
                     <label htmlFor="3">
                       {t("New Year")}
                     </label>
-                      <input 
+
+                    <input 
                       type="radio"
                       className="radio-button"
                       id="4"
@@ -125,10 +156,11 @@ function HomePage() {
                       value={t("Good Morning")}
                       onChange={changeForm} 
                       onClick={() => {setCustomOccasionClicked(false)}}
-                      />
+                    />
                     <label htmlFor="4">
-                      {t("Good Morning")}
+                    {t("Good Morning")}
                     </label>
+
                     <input 
                       type="radio"
                       className="radio-button"
@@ -137,11 +169,12 @@ function HomePage() {
                       value={t("Good Night")}
                       onChange={changeForm} 
                       onClick={() => {setCustomOccasionClicked(false)}}
-                      />
+                    />
                     <label htmlFor="5">
-                      {t("Good Night")}
+                    {t("Good Night")}
                     </label>
-                      <input 
+
+                    <input 
                       type="radio"
                       className="radio-button"
                       id="6"
@@ -149,62 +182,51 @@ function HomePage() {
                       value=""
                       onChange={changeForm}
                       onClick={() => {setCustomOccasionClicked(true)}}
-                      />
+                    />
                     <label htmlFor="6">
-                      {t("Custom")}
+                    {t("Custom")}
                     </label>
+
                   </div>
                 </div>
-                {customOccasionClicked ? 
+
+                {customOccasionClicked
+                ? 
                 <input 
                   autoComplete="off" 
                   className="input occasion" 
-                  type="text" name="occasion" 
+                  type="text" 
+                  name="occasion" 
                   placeholder={t("Input your occasion")} 
                   onChange={changeForm} 
-                /> :
-                  null
+                /> 
+                :
+                null
                 }
+
                 <input 
                   autoComplete="off" 
                   className="input name" 
-                  type="text" name="name" 
+                  type="text" 
+                  name="name" 
                   placeholder={t("What is your friend's name?")} 
                   onChange={changeForm} 
                 />
+
                 <button
                   type="submit"
                   className="find-button"
                   title={disabledSearchButton ? t("Choose occasion or input name") : null}
                   disabled={disabledSearchButton} 
-                  onClick={handleClick}>
-                    {t("Find Image")}
+                  onClick={handleSubmit}>
+                  {t("Find Image")}
                   </button>
+
               </form>
             </div>
-              <div className="image-container">
-                {loading ? <>
-                    <div className="lds-dual-ring"></div><p className="loading-description">{t("Image is loading")}</p>
-                  </> :
-                  <img className="image-result" src ={imageSrc} alt={t("Couldn't load, try again")} />}
-              </div>
-            </div>
-            <div className="image-description">
-                {loading ? null : (error ? 
-                  <p className="error-description">{t(error)}</p> :
-                start ? 
-                  <p className="image-source-description">{t("Source: ") + imageSrc.substring(0, 100)}</p> : 
-                  null
-                  )
-                }
-            </div>
-          <ToastContainer
-            limit={3}
-            newestOnTop={false}
-            rtl={false}
-           />
-        </>
+          <Image loading={loading} error={error} start={start} imageSrc={imageSrc} t={t} />
+        </div>
+        <ImageDescription loading={loading} error={error} start={start} imageSrc={imageSrc} t={t} />
+      </>
     );
   }
-
-  export default HomePage;
