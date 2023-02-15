@@ -1,0 +1,29 @@
+{
+    "Congratulate your friend": "Congratulate your friend",
+    "Choose the occasion": "Choose the occasion",
+
+    "Birthday": "Birthday",
+    "Happy Birthday": "Happy Birthday",
+    "Christmas": "Christmas",
+    "Merry Christmas": "Merry Christmas",
+    "New Year": "New Year",
+    "Happy New Year": "Happy New Year",
+    "Good Morning": "Good Morning",
+    "Good Night": "Good Night",
+    "Custom": "Custom",
+
+    "Input your occasion": "Input your occasion",
+    "What is your friend's name?": "What is your friend's name?",
+    "Find Image": "Find Image",
+    "Choose occasion or input name": "Choose occasion or input name",
+
+
+    "Image is loading": "Image is loading",
+    "Couldn't load, try again": "Couldn't load, try again",
+    "Click to copy image": "Click to copy image",
+    "Source: ": "Source: ",
+
+    "Image copied to clipboard": "Image copied to clipboard",
+    "server could not find image according to your query": "server could not find image according to your query"
+
+}

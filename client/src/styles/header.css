@@ -1,0 +1,57 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    align-items: center;
+    background-color: darkslategray;
+    margin-bottom: 5vh;
+  }
+  
+  .brand-title {
+    font-size: 2rem;
+    margin: .5rem;
+  }
+  
+  .language {
+    margin: 0;
+    background: none;
+    border: none;
+    font-size: inherit;
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    color: white;
+  }
+  
+  .language-option {
+    padding: 1rem 1.4rem;
+    background: none;
+    border: none;
+    font-size: inherit;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .dropdown:hover .language {
+    background-color: #555;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #555;
+    border-bottom-left-radius: .25rem;
+    opacity: 0;
+    text-align: center;
+  }
